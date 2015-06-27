@@ -58,7 +58,7 @@ $(function() {
 		* the CSS to determine how we're performing the
 		* hiding/showing of the menu element.
 		*/
-		xit('have names', function() {
+		xit('is hidden by default', function() {
 			expect(allFeeds).toBeDefined();
 			expect(allFeeds.length).not.toBe(0);
 		});
@@ -68,7 +68,7 @@ $(function() {
 		* should have two expectations: does the menu display when
 		* clicked and does it hide when clicked again.
 		*/
-		xit('have names', function() {
+		xit('changes visibility when clicked', function() {
 			expect(allFeeds).toBeDefined();
 			expect(allFeeds.length).not.toBe(0);
 		});
@@ -86,7 +86,7 @@ $(function() {
 		* Remember, loadFeed() is asynchronous so this test wil require
 		* the use of Jasmine's beforeEach and asynchronous done() function.
 		*/
-		xit('have names', function() {
+		xit('should have at least one entry element', function() {
 			expect(allFeeds).toBeDefined();
 			expect(allFeeds.length).not.toBe(0);
 		});
@@ -100,7 +100,7 @@ $(function() {
 		* by the loadFeed function that the content actually changes.
 		* Remember, loadFeed() is asynchronous.
 		*/
-		xit('have names', function() {
+		xit('changes when there is new feed', function() {
 			expect(allFeeds).toBeDefined();
 			expect(allFeeds.length).not.toBe(0);
 		});
