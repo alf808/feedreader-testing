@@ -135,7 +135,7 @@ $(function() {
 
 	/* TODO: Write a new test suite named "New Feed Selection" */
 
-	describe('New Feed Selection', function() {
+	xdescribe('New Feed Selection', function() {
 		var feedId = 4;
 		var initialFeedId = 0;
 		var beforeFeedTitle, afterFeedTitle;
@@ -168,7 +168,7 @@ $(function() {
 		* by the loadFeed function that the content actually changes.
 		* Remember, loadFeed() is asynchronous.
 		*/
-		it('changes when new feed is selected', function(done) {
+		xit('changes when new feed is selected', function(done) {
 			expect(afterFeedLength).toBeGreaterThan(0);
 			expect(beforeFeedLength).toBeGreaterThan(0);
 			expect(beforeFeedTitle).not.toBe(afterFeedTitle);
