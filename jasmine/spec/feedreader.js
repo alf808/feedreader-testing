@@ -9,6 +9,11 @@
 * to ensure they don't run until the DOM is ready.
 */
 $(function() {
+
+	// regex for URL validity. Absolutely not perfect. It catches most possibilities.
+	// modified a version seen in http://regexlib.com/Search.aspx?k=url&AspxAutoDetectCookieSupport=1
+	var validUrl = /^((ht|f)tps?:\/\/)?[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?$/;
+
 	/* This is our first test suite - a test suite just contains
 	* a related set of tests. This suite is all about the RSS
 	* feeds definitions, the allFeeds variable in our application.
@@ -21,19 +26,30 @@ $(function() {
 		* allFeeds in app.js to be an empty array and refresh the
 		* page?
 		*/
+
 		it('are defined', function() {
 			expect(allFeeds).toBeDefined();
 			expect(allFeeds.length).not.toBe(0);
 		});
 
+	});
+
+	// Suite for each item in an RSS feed.
+	describe('Each feed item in the RSS feeds', function() {
 
 		/* TODO: Write a test that loops through each feed
 		* in the allFeeds object and ensures it has a URL defined
 		* and that the URL is not empty.
 		*/
-		xit('have URLs', function() {
-			expect(allFeeds).toBeDefined();
-			expect(allFeeds.length).not.toBe(0);
+
+		it('has a defined valid URL', function() {
+			// do a foreach here
+			allFeeds.forEach(function(item) {
+				expect(item.url).toBeDefined();
+				expect(typeof item.url).toEqual('string'); // check to make sure that URL is a string
+				expect(item.url).not.toBe(''); // i.e. not an empty string
+				expect(item.url).toMatch(validUrl); // match the regex for URL validity
+			});
 		});
 
 
@@ -41,11 +57,13 @@ $(function() {
 		* in the allFeeds object and ensures it has a name defined
 		* and that the name is not empty.
 		*/
-		xit('have names', function() {
-			expect(allFeeds).toBeDefined();
-			expect(allFeeds.length).not.toBe(0);
+		it('has a defined non-empty name', function() {
+			allFeeds.forEach(function(item) {
+				expect(item.name).toBeDefined();
+				expect(typeof item.name).toEqual('string'); // check to make sure that name is a string
+				expect(item.name).not.toBe(''); // i.e. not an empty string
+			});
 		});
-
 
 	});
 
@@ -68,7 +86,7 @@ $(function() {
 		* should have two expectations: does the menu display when
 		* clicked and does it hide when clicked again.
 		*/
-		xit('changes visibility when clicked', function() {
+		xit('toggles visibility when clicked', function() {
 			expect(allFeeds).toBeDefined();
 			expect(allFeeds.length).not.toBe(0);
 		});
@@ -100,7 +118,7 @@ $(function() {
 		* by the loadFeed function that the content actually changes.
 		* Remember, loadFeed() is asynchronous.
 		*/
-		xit('changes when there is new feed', function() {
+		xit('changes when new feed is selected', function() {
 			expect(allFeeds).toBeDefined();
 			expect(allFeeds.length).not.toBe(0);
 		});
