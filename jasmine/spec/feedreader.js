@@ -32,7 +32,7 @@ $(function() {
 	});
 
 	// Suite for each item in an RSS feed.
-	describe('Each feed item in the RSS feeds', function() {
+	describe('Each feed in the list of RSS feeds', function() {
 
 		/* TODO: Write a test that loops through each feed
 		* in the allFeeds object and ensures it has a URL defined
@@ -53,6 +53,16 @@ $(function() {
 			});
 		});
 
+		// extra test to make sure each feed has content
+		// NO need to do this. Initial Entries suite does this
+		xit('has content', function() {
+			allFeeds.forEach(function(item) {
+				var feed = new google.feeds.Feed(item.url);
+				expect(item.name).toBeDefined(); // key name exists
+				expect(typeof item.name).toEqual('string'); // check to make sure that name is a string
+				expect(item.name).not.toBe(''); // i.e. not an empty string
+			});
+		});
 
 		/* TODO: Write a test that loops through each feed
 		* in the allFeeds object and ensures it has a name defined
@@ -68,15 +78,16 @@ $(function() {
 
 	});
 
+
 	/* TODO: Write a new test suite named "The menu" */
 
 	describe('The menu', function() {
 			// general jquery analogues
 			var body = $('body');
-			var menu = $('.menu');
-			var hidden = $('.hidden');
+			// var menu = $('.menu');
+			// var hidden = $('.hidden');
 			var icon = $('.menu-icon-link');
-			var menuhidden = body.hasClass('menu-hidden');
+			// var menuhidden = body.hasClass('menu-hidden');
 			// beforeEach(function() {
 
 	  // });
@@ -86,12 +97,7 @@ $(function() {
 		* hiding/showing of the menu element.
 		*/
 		it('is hidden by default', function() {
-//			expect(body).toBeHidden();
 			expect(body.hasClass('menu-hidden')).toBe(true); //checks if body has the class
-//			expect($('.menu.hidden').css("transform", "translate3d(-12em, 0, 0)")).toBeTruthy();
-//			expect(menu.css("transform")).toBe("translate3d(-12em, 0, 0)");
-//			expect(menu).toBeHidden(); // checks if menu on load is hidden or consumes no space
-//			expect(allFeeds.length).not.toBe(0);
 		});
 
 		/* TODO: Write a test that ensures the menu changes
@@ -112,10 +118,11 @@ $(function() {
 
 	/* TODO: Write a new test suite named "Initial Entries" */
 	describe('Initial Entries', function() {
-
+		var feedId = 3;
 		// Loads the initial feed that the app has defined (index of 0).
+		// i created a fifth feed (index of 4) that contains nothing. Enter 4 to see jasmine errors.
 		beforeEach(function(done) {
-			loadFeed(0,done);
+			loadFeed(feedId,done);
 		});
 
 		/* TODO: Write a test that ensures when the loadFeed
@@ -124,24 +131,57 @@ $(function() {
 		* Remember, loadFeed() is asynchronous so this test wil require
 		* the use of Jasmine's beforeEach and asynchronous done() function.
 		*/
-		xit('should have at least one entry element', function() {
-
+	// when there is no item there is also no DOM element with ".entry" as class
+		it('should have at least one entry element', function(done) {
+			var feedItems = $('.feed').find('.entry');
+			expect(feedItems.length).toBeGreaterThan(0);
+			done();
 		});
 	});
 
 	/* TODO: Write a new test suite named "New Feed Selection" */
 
-	describe('New Feed Selection', function() {
+	xdescribe('New Feed Selection', function() {
+		var initialFeedId = 0;
+		var compareFeedId = 3;
+		var beforeFeedTitle, afterFeedTitle;
+		// var beforeFeedLength, afterFeedLength;
+
+		beforeEach(function(done) {
+			loadFeed(compareFeedId, function() {
+				beforeFeedTitle = $('.header-title').text();
+				// beforeFeedLength = $('.feed').find('.entry').length;
+						done();
+				});
+			// done();
+			});
+		// });
+
+		beforeEach(function(done) {
+			loadFeed(initialFeedId, function() {
+				// get the contents of the element with class header-title
+				afterFeedTitle = $('.header-title').text();
+				// afterFeedLength = $('.feed').find('.entry').length;
+						done();
+				});
+			// done();
+			});
 
 		/* TODO: Write a test that ensures when a new feed is loaded
 		* by the loadFeed function that the content actually changes.
 		* Remember, loadFeed() is asynchronous.
 		*/
-		xit('changes when new feed is selected', function() {
+		it('changes when new feed is selected and if new feed has content', function(done) {
+			// expect(afterFeedLength).toBeGreaterThan(0);
+			// expect(beforeFeedLength).toBeGreaterThan(0);
+			expect(beforeFeedTitle).not.toBe(afterFeedTitle);
+			done();
+			// console.log(beforeFeedLength);
+			console.log(beforeFeedTitle);
+			// console.log(afterFeedLength);
+			console.log(afterFeedTitle);
 		});
+
 	});
-
-
-
 
 }());

@@ -75,6 +75,9 @@ function loadFeed(id, cb) {
 			entries.forEach(function(entry) {
 				container.append(entryTemplate(entry));
 			});
+		} else { // send message to browser that no results were retrieved
+			$('.header-title').html('Sorry. We could not retrieve results for <strong>[' + allFeeds[id].name + ']</strong> feed at this time.');
+
 		}
 
 		if (cb) {
