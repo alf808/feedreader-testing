@@ -10,9 +10,6 @@
 */
 $(function() {
 
-	// regex for URL validity. Absolutely not perfect. It catches most possibilities.
-	// modified a version seen in http://regexlib.com/Search.aspx?k=url&AspxAutoDetectCookieSupport=1
-	var validUrl = /^((ht|f)tps?:\/\/)?[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?$/;
 
 	/* This is our first test suite - a test suite just contains
 	* a related set of tests. This suite is all about the RSS
@@ -41,11 +38,15 @@ $(function() {
 		* in the allFeeds object and ensures it has a URL defined
 		* and that the URL is not empty.
 		*/
+		// regex for URL validity. Absolutely not perfect. It catches most possibilities.
+		// modified a version seen in http://regexlib.com/Search.aspx?k=url&AspxAutoDetectCookieSupport=1
+		var validUrl = /^((ht|f)tps?:\/\/)?[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?$/;
+
 
 		it('has a defined valid URL', function() {
 			// do a foreach here
 			allFeeds.forEach(function(item) {
-				expect(item.url).toBeDefined();
+				expect(item.url).toBeDefined(); // key url exists
 				expect(typeof item.url).toEqual('string'); // check to make sure that URL is a string
 				expect(item.url).not.toBe(''); // i.e. not an empty string
 				expect(item.url).toMatch(validUrl); // match the regex for URL validity
@@ -59,7 +60,7 @@ $(function() {
 		*/
 		it('has a defined non-empty name', function() {
 			allFeeds.forEach(function(item) {
-				expect(item.name).toBeDefined();
+				expect(item.name).toBeDefined(); // key name exists
 				expect(typeof item.name).toEqual('string'); // check to make sure that name is a string
 				expect(item.name).not.toBe(''); // i.e. not an empty string
 			});
@@ -69,16 +70,28 @@ $(function() {
 
 	/* TODO: Write a new test suite named "The menu" */
 
-	xdescribe('The menu', function() {
+	describe('The menu', function() {
+			// general jquery analogues
+			var body = $('body');
+			var menu = $('.menu');
+			var hidden = $('.hidden');
+			var icon = $('.menu-icon-link');
+			var menuhidden = body.hasClass('menu-hidden');
+			// beforeEach(function() {
 
+	  // });
 		/* TODO: Write a test that ensures the menu element is
 		* hidden by default. You'll have to analyze the HTML and
 		* the CSS to determine how we're performing the
 		* hiding/showing of the menu element.
 		*/
-		xit('is hidden by default', function() {
-			expect(allFeeds).toBeDefined();
-			expect(allFeeds.length).not.toBe(0);
+		it('is hidden by default', function() {
+//			expect(body).toBeHidden();
+			expect(body.hasClass('menu-hidden')).toBe(true); //checks if body has the class
+//			expect($('.menu.hidden').css("transform", "translate3d(-12em, 0, 0)")).toBeTruthy();
+//			expect(menu.css("transform")).toBe("translate3d(-12em, 0, 0)");
+//			expect(menu).toBeHidden(); // checks if menu on load is hidden or consumes no space
+//			expect(allFeeds.length).not.toBe(0);
 		});
 
 		/* TODO: Write a test that ensures the menu changes
@@ -86,17 +99,24 @@ $(function() {
 		* should have two expectations: does the menu display when
 		* clicked and does it hide when clicked again.
 		*/
-		xit('toggles visibility when clicked', function() {
-			expect(allFeeds).toBeDefined();
-			expect(allFeeds.length).not.toBe(0);
+
+		it('toggles visibility when clicked', function() {
+			icon.trigger('click');
+			expect(body.hasClass('menu-hidden')).toBe(false);
+			icon.trigger('click');
+			expect(body.hasClass('menu-hidden')).toBe(true);
 		});
 
 
 	});
 
 	/* TODO: Write a new test suite named "Initial Entries" */
-	xdescribe('Initial Entries', function() {
+	describe('Initial Entries', function() {
 
+		// Loads the initial feed that the app has defined (index of 0).
+		beforeEach(function(done) {
+			loadFeed(0,done);
+		});
 
 		/* TODO: Write a test that ensures when the loadFeed
 		* function is called and completes its work, there is at least
@@ -105,22 +125,19 @@ $(function() {
 		* the use of Jasmine's beforeEach and asynchronous done() function.
 		*/
 		xit('should have at least one entry element', function() {
-			expect(allFeeds).toBeDefined();
-			expect(allFeeds.length).not.toBe(0);
+
 		});
 	});
 
 	/* TODO: Write a new test suite named "New Feed Selection" */
 
-	xdescribe('New Feed Selection', function() {
+	describe('New Feed Selection', function() {
 
 		/* TODO: Write a test that ensures when a new feed is loaded
 		* by the loadFeed function that the content actually changes.
 		* Remember, loadFeed() is asynchronous.
 		*/
 		xit('changes when new feed is selected', function() {
-			expect(allFeeds).toBeDefined();
-			expect(allFeeds.length).not.toBe(0);
 		});
 	});
 
