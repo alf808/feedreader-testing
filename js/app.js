@@ -25,7 +25,7 @@ var allFeeds = [
 		url: 'o.ro/~alf/about'
 	}
 ];
-
+//
 /* This function starts up our application. The Google Feed
 * Reader API is loaded asynchonously and will then call this
 * function when the API is loaded.
@@ -119,7 +119,7 @@ $(function() {
 	*/
 	feedList.on('click', 'a', function() {
 		var item = $(this);
-
+console.log(item.data('id'));
 		$('body').addClass('menu-hidden');
 		loadFeed(item.data('id'));
 		return false;

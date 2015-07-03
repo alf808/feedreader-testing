@@ -32,7 +32,7 @@ $(function() {
 	});
 
 	// Suite for each item in an RSS feed.
-	describe('Each feed item in the RSS feeds', function() {
+	describe('Each feed in the list of RSS feeds', function() {
 
 		/* TODO: Write a test that loops through each feed
 		* in the allFeeds object and ensures it has a URL defined
@@ -73,10 +73,10 @@ $(function() {
 	describe('The menu', function() {
 			// general jquery analogues
 			var body = $('body');
-			var menu = $('.menu');
-			var hidden = $('.hidden');
+			// var menu = $('.menu');
+			// var hidden = $('.hidden');
 			var icon = $('.menu-icon-link');
-			var menuhidden = body.hasClass('menu-hidden');
+			// var menuhidden = body.hasClass('menu-hidden');
 			// beforeEach(function() {
 
 	  // });
@@ -112,10 +112,11 @@ $(function() {
 
 	/* TODO: Write a new test suite named "Initial Entries" */
 	describe('Initial Entries', function() {
-
+		var feedId = '0';
 		// Loads the initial feed that the app has defined (index of 0).
+		// i created a fifth feed (index of 4) that contains nothing. Enter 4 to see jasmine errors.
 		beforeEach(function(done) {
-			loadFeed(0,done);
+			loadFeed(feedId,done);
 		});
 
 		/* TODO: Write a test that ensures when the loadFeed
@@ -124,24 +125,55 @@ $(function() {
 		* Remember, loadFeed() is asynchronous so this test wil require
 		* the use of Jasmine's beforeEach and asynchronous done() function.
 		*/
-		xit('should have at least one entry element', function() {
-
+	// when there is no item there is also no DOM element with ".entry" as class
+		it('should have at least one entry element', function(done) {
+			var feedItems = $('.feed').find('.entry');
+			expect(feedItems.length).toBeGreaterThan(0);
+			done();
 		});
 	});
 
 	/* TODO: Write a new test suite named "New Feed Selection" */
 
 	describe('New Feed Selection', function() {
+		var feedId = 4;
+		var initialFeedId = 0;
+		var beforeFeedTitle, afterFeedTitle;
+		var beforeFeedLength, afterFeedLength;
+
+		beforeEach(function(done) {
+			loadFeed(feedId, function() {
+				beforeFeedTitle = $('.header-title').text();
+				beforeFeedLength = $('.feed').find('.entry').length; // get number of items in feed
+				// $('.feed-list').on('click', 'a', function(done) {
+				// 	feedId = $(this).data('id');
+				// console.log(feedId);
+				// done();
+				// });
+				// $('.feed-list').trigger('click');
+				// $('.feed-list').click(function(done) {
+				//   $('.feed-list').trigger('click');
+				// 	feedId = $(this).data('id');
+				// 	console.log(feedId);
+				// });
+				loadFeed(initialFeedId, function() {
+						afterFeedTitle = $('.header-title').text();
+						afterFeedLength = $('.feed').find('.entry').length;
+						done();
+				});
+			});
+		});
 
 		/* TODO: Write a test that ensures when a new feed is loaded
 		* by the loadFeed function that the content actually changes.
 		* Remember, loadFeed() is asynchronous.
 		*/
-		xit('changes when new feed is selected', function() {
+		it('changes when new feed is selected', function(done) {
+			expect(afterFeedLength).toBeGreaterThan(0);
+			expect(beforeFeedLength).toBeGreaterThan(0);
+			expect(beforeFeedTitle).not.toBe(afterFeedTitle);
+			done();
 		});
 	});
-
-
-
 
 }());
