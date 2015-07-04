@@ -38,10 +38,10 @@ $(function() {
 		* in the allFeeds object and ensures it has a URL defined
 		* and that the URL is not empty.
 		*/
-		// regex for URL validity. Absolutely not perfect. It catches most possibilities.
+		// regex for URL validity. It catches most possibilities. Below is
 		// modified a version seen in http://regexlib.com/Search.aspx?k=url&AspxAutoDetectCookieSupport=1
-		var validUrl = /^((ht|f)tps?:\/\/)?[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?$/;
-
+		// localhost with port ID or IP addresses are excluded
+		var validUrl = /^((ht|f)tps?:\/\/)?[a-z0-9-\.]+\.[a-z]{2,}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?$/;
 
 		it('has a defined valid URL', function() {
 			// do a foreach here
@@ -50,17 +50,6 @@ $(function() {
 				expect(typeof item.url).toEqual('string'); // check to make sure that URL is a string
 				expect(item.url).not.toBe(''); // i.e. not an empty string
 				expect(item.url).toMatch(validUrl); // match the regex for URL validity
-			});
-		});
-
-		// extra test to make sure each feed has content
-		// NO need to do this. Initial Entries suite does this
-		xit('has content', function() {
-			allFeeds.forEach(function(item) {
-				var feed = new google.feeds.Feed(item.url);
-				expect(item.name).toBeDefined(); // key name exists
-				expect(typeof item.name).toEqual('string'); // check to make sure that name is a string
-				expect(item.name).not.toBe(''); // i.e. not an empty string
 			});
 		});
 
@@ -97,6 +86,9 @@ $(function() {
 		* hiding/showing of the menu element.
 		*/
 		it('is hidden by default', function() {
+			expect($('.menu-hidden').length).not.toBe(0); // checks if class menu-hidden is in document
+			console.log($('.menu-hidden').length);
+			expect($('.menu-hidden').css('visibility')).toBe('hidden');
 			expect(body.hasClass('menu-hidden')).toBe(true); //checks if body has the class
 		});
 
@@ -118,7 +110,7 @@ $(function() {
 
 	/* TODO: Write a new test suite named "Initial Entries" */
 	describe('Initial Entries', function() {
-		var feedId = 3;
+		var feedId = 0;
 		// Loads the initial feed that the app has defined (index of 0).
 		// i created a fifth feed (index of 4) that contains nothing. Enter 4 to see jasmine errors.
 		beforeEach(function(done) {
@@ -141,15 +133,19 @@ $(function() {
 
 	/* TODO: Write a new test suite named "New Feed Selection" */
 
-	xdescribe('New Feed Selection', function() {
+	describe('New Feed Selection', function() {
 		var initialFeedId = 0;
-		var compareFeedId = 3;
-		var beforeFeedTitle, afterFeedTitle;
-		// var beforeFeedLength, afterFeedLength;
+		var compareFeedId = 2;
+		// var beforeFeedTitle, afterFeedTitle;
+		var compareContent, initialContent;
 
 		beforeEach(function(done) {
 			loadFeed(compareFeedId, function() {
-				beforeFeedTitle = $('.header-title').text();
+				var prefix = allFeeds[compareFeedId].url;
+				// grab text node within the element with class ".entry" and get rid of all white spaces
+				// prefix it with the originating URL for feed request
+				compareContent = prefix + $('.feed').find('.entry').text().replace(/\s/g, "");
+				// b4Url = allFeeds[compareFeedId].url;
 				// beforeFeedLength = $('.feed').find('.entry').length;
 						done();
 				});
@@ -160,7 +156,8 @@ $(function() {
 		beforeEach(function(done) {
 			loadFeed(initialFeedId, function() {
 				// get the contents of the element with class header-title
-				afterFeedTitle = $('.header-title').text();
+				var prefix = allFeeds[initialFeedId].url;
+				initialContent = prefix + $('.feed').find('.entry').text().replace(/\s/g, "");
 				// afterFeedLength = $('.feed').find('.entry').length;
 						done();
 				});
@@ -172,14 +169,12 @@ $(function() {
 		* Remember, loadFeed() is asynchronous.
 		*/
 		it('changes when new feed is selected and if new feed has content', function(done) {
-			// expect(afterFeedLength).toBeGreaterThan(0);
-			// expect(beforeFeedLength).toBeGreaterThan(0);
-			expect(beforeFeedTitle).not.toBe(afterFeedTitle);
+			expect(initialContent).not.toBe(compareContent);
 			done();
 			// console.log(beforeFeedLength);
-			console.log(beforeFeedTitle);
+			console.log(initialContent);
 			// console.log(afterFeedLength);
-			console.log(afterFeedTitle);
+			console.log(compareContent);
 		});
 
 	});
