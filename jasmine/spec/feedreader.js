@@ -28,7 +28,7 @@ $(function() {
 	*/
 	describe('Each feed in the list of RSS feeds', function() {
 
-		/* Thess tests loop through each feed in the allFeeds object
+		/* These tests loop through each feed in the allFeeds object
 		* and ensure it has defined and non-empty name and url.
 		*
 		* ADDITIONAL TESTS:
@@ -125,23 +125,20 @@ $(function() {
 		*/
 		beforeEach(function(done) {
 			loadFeed(compareFeedId, function() {
-				var prefixUrl = allFeeds[compareFeedId].url; // the originating URL for feed request
-
 				// Grab the text node within the element with class ".entry" and get rid of all white spaces
-				// Then prefix it with the originating URL. This content will be compared to another content
-				compareContent = prefixUrl + $('.feed').find('.entry').text().replace(/\s/g, "");
+				// This content will be compared to another content
+				compareContent = $('.feed').find('.entry').text().replace(/\s/g, "");
 						done();
 			});
 		});
 			// repeat the process
 		beforeEach(function(done) {
 			loadFeed(initialFeedId, function() {
-				var prefixUrl = allFeeds[initialFeedId].url;
-				initialContent = prefixUrl + $('.feed').find('.entry').text().replace(/\s/g, "");
+				initialContent = $('.feed').find('.entry').text().replace(/\s/g, "");
 					done();
 			});
 		});
-		// When the 2 loadFeed calls are finished then compare the their content
+		// When the 2 loadFeed calls are finished then compare their content
 		it('changes when new feed is selected and if new feed has content', function(done) {
 			expect(initialContent).not.toBe(compareContent);
 			done();
