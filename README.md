@@ -1,42 +1,59 @@
-# Project Overview
+# Testing JavaScript Web Application with Jasmine's TDD Framework
 
-In this project you are given a web-based application that reads RSS feeds. The original developer of this application clearly saw the value in testing, they've already included [Jasmine](http://jasmine.github.io/) and even started writing their first test suite! Unfortunately, they decided to move on to start their own company and we're now left with an application with an incomplete test suite. That's where you come in.
+## Description
 
-1. As instructions indicated, I made a change in the original repo to make first spec fail and see how Jasmine reports it.
+This is a simulation of a Test-Driven Development (TDD) method or Red-Green Refactor Process. In this project we are given a web-based application that reads RSS feeds. Although the application has already been written, we were expected to write suites and specs with Jasmine’s testing framework. We were provided hints in the skeleton (feedreader.js) of what specs we need to write to test against the application’s JavaScript source (app.js).
 
-1. Created a skeleton of specs and tests in preparation of writing tests for ../js/app.js
+### How to Run
+Load index.html on a browser. It shows an initial list of articles from Udacity Blog. It has a hamburger icon which when clicked will show either a selection of other feeds or, if there are errors on the page, a menu of error view options. It is not a regular page in that this site also presents the Jasmine test results at the bottom of the page — specifically the test suites for content validity and UI event results.
 
-## Why this Project?
+## Tests Performed
+* RSS feeds are defined in `allFeeds` array and one or more exist in the array.
+* Each feed in `allFeeds` has a defined, string-type, non-empty and valid `url`.
+* Each feed has a defined, string-type, non-empty `name`.
+* The off-canvas menu is hidden by default on load.
+* The menu toggles visibility upon clicking the hamburger icon.
+* The initial feed has at least one item.
+* The feed changes content upon selecting a different feed in the menu.
 
-Testing is an important part of the development process and many organizations practice a standard of development known as "test-driven development". This is when developers write tests first, before they ever start developing their application. All the tests initially fail and then they start writing application code to make these tests pass.
+## Some of the Ways to Make App Fail
 
-Whether you work in an organization that uses test-driven development or in an organization that uses tests to make sure future feature development doesn't break existing features, it's an important skill to have!
+#### in `app.js`
+1. delete `allFeeds` array
+1. delete either `name` or `url` field in allFeeds
+1. put a non-string type in `name` or `url` field
+1. put an empty-string in `name` or `url` property
+1. put a non-valid URL in `url`. localhost and IP addresses will also be considered non-valid for this test.
 
+#### in `style.css`
+The application and and hence the specs rely heavily on DOM access through classes and IDs defined in a CSS file. Through handlebarsjs templating app, DOM is manipulated through population of bound values with html tags.
+1. deleting the `style.css` file will render the page improperly but will not register unit testing errors
+1. deleting `menu-hidden` or `menu` classes will render elements improperly but will not register errors
 
-## What will I learn?
+#### in `index.html`
+1. delete references to `menu-hidden`, `menu-icon-link`, `feed`, `entry` ID and classes
 
-You will learn how to use Jasmine to write a number of tests against a pre-existing application. These will test the underlying business logic of the application as well as the event handling and DOM manipulation.
+#### in `feedreader.js` (Only feeds 0, 1, 2, and 3 are defined in `app.js`.)
+1. in suite “Initial Entries”, change `feedId` to anything but 0 to 3
+1. in same suite, change references to style classes in `feedItems`, namely `.feed` and `.entry`
+1. in suite "New Feed", change `initialFeedId` and `compareFeedId` to anything but 0 to 3
 
+## Where are the Relevant Files
+* index.html
+* css/style.css
+* js/app.js
+* jasmine/spec/feedreader.js
 
-## How will this help my career?
+## Dependencies
+* jQuery
+* Handlebars
+* Jasmine-2.1.2
+* Google Fonts
+* icomoon.css and fonts
+* normalize.css
 
-* Writing effective tests requires analyzing multiple aspects of an application including the HTML, CSS and JavaScript - an extremely important skill when changing teams or joining a new company.
-* Good tests give you the ability to quickly analyze whether new code breaks an existing feature within your codebase, without having to manually test all of the functionality.
-
-
-# How will I complete this project?
-
-1. Download the [required project assets](http://github.com/udacity/frontend-nanodegree-feedreader).
-2. Review the functionality of the application within your browser.
-3. Explore the application's HTML (*./index.html*), CSS (*./css/style.css*) and JavaScript (*./js/app.js*) to gain an understanding of how it works.
-4. Explore the Jasmine spec file in *./jasmine/spec/feedreader.js*
-5. Edit the allFeeds variable in *./js/app.js* to make the provided test fail and see how Jasmine visualizes this failure in your application.
-6. Return the allFeeds variable to a passing state.
-7. Write a test that loops through each feed in the allFeeds object and ensures it has a URL defined and that the URL is not empty.
-8. Write a test that loops through each feed in the allFeeds object and ensures it has a name defined and that the name is not empty.
-9. Write a new test suite named "The menu".
-10. Write a test that ensures the menu element is hidden by default. You'll have to analyze the HTML and the CSS to determine how we're performing the hiding/showing of the menu element.
-11. Write a test that ensures the menu changes visibility when the menu icon is clicked. This test should have two expectations: does the menu display when clicked and does it hide when clicked again.
-12. Write a test that ensures when the loadFeed function is called and completes its work, there is at least a single .entry element within the .feed container. Remember, loadFeed() is asynchronous so this test wil require the use of Jasmine's beforeEach and asynchronous done() function.
-13. Write a test that ensures when a new feed is loaded by the loadFeed function that the content actually changes. Remember, loadFeed() is asynchronous.
-14. When complete - all of your tests should pass.
+## Resources
+* [Jasmine documentation](http://jasmine.github.io/2.2/introduction.html)
+* [Google Feed API](https://developers.google.com/feed/)
+* Udacity's JavaScript Testing course with Mike Wales
+* [Mozilla Developer Network](https://developer.mozilla.org/en-US/)
