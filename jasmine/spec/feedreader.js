@@ -102,7 +102,7 @@ $(function() {
 		* the use of Jasmine's beforeEach and asynchronous done() function.
 		*/
 		beforeEach(function(done) {
-			loadFeed(feedId,done);
+			loadFeed(feedId, done);
 		});
 
 		it('should have at least one entry element', function(done) {
@@ -122,26 +122,24 @@ $(function() {
 		/* This test ensures that when a new feed is loaded
 		* by the loadFeed function that the content actually changes.
 		* Again loadFeed() is asynchronous so callback done() is used.
+		* loadFeed() is invoked twice but one is nested with callback done()
 		*/
 		beforeEach(function(done) {
 			loadFeed(compareFeedId, function() {
 				// Grab the text node within the element with class ".entry" and get rid of all white spaces
 				// This content will be compared to another content
 				compareContent = $('.feed').find('.entry').text().replace(/\s/g, "");
-						done();
-			});
-		});
-			// repeat the process
-		beforeEach(function(done) {
-			loadFeed(initialFeedId, function() {
-				initialContent = $('.feed').find('.entry').text().replace(/\s/g, "");
+				// Grab the other text node
+				loadFeed(initialFeedId, function() {
+					initialContent = $('.feed').find('.entry').text().replace(/\s/g, "");
 					done();
+				});
 			});
 		});
+
 		// When the 2 loadFeed calls are finished then compare their content
-		it('changes when new feed is selected and if new feed has content', function(done) {
+		it('changes when new feed is selected and if new feed has content', function() {
 			expect(initialContent).not.toBe(compareContent);
-			done();
 		});
 
 	});
